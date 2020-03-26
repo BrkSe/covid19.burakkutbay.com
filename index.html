@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+    <!-- Title Page-->
+    <title>Korona Virüs Sayısı</title>
+
+    <!-- Fontfaces CSS-->
+    <link href="css/font-face.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
+
+    <!-- Bootstrap CSS-->
+    <link href="vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
+
+    <!-- Vendor CSS-->
+    <link href="vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
+
+    <!-- Main CSS-->
+    <link href="css/theme.css" rel="stylesheet" media="all">
+
+</head>
+
+<body class="animsition">
+
+<script>
+    var xmlhttp = new XMLHttpRequest();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+            var myArr = JSON.parse(this.responseText);
+
+            var b;
+            for (var i = 0; i < myArr.results.length; i++) {
+                if (myArr.results[i].provinceEnglishName == "Turkey") {
+                    document.getElementById("enfekteOlan").innerHTML = myArr.results[i].confirmedCount;
+                    document.getElementById("hayatiniKaybeden").innerHTML = myArr.results[i].deadCount;
+                    document.getElementById("iyilesen").innerHTML = myArr.results[i].curedCount;
+                    b = i;
+                }
+                if (myArr.results[i].provinceEnglishName == "United States of America") {
+                    document.getElementById("america").innerHTML = myArr.results[i].confirmedCount;
+                    document.getElementById("americaDead").innerHTML = myArr.results[i].deadCount;
+                }
+                if (myArr.results[i].provinceEnglishName == "Italy") {
+                    document.getElementById("italy").innerHTML = myArr.results[i].confirmedCount;
+                    document.getElementById("italyDead").innerHTML = myArr.results[i].deadCount;
+                }
+                if (myArr.results[i].provinceEnglishName == "France") {
+                    document.getElementById("france").innerHTML = myArr.results[i].confirmedCount;
+                    document.getElementById("franceDead").innerHTML = myArr.results[i].deadCount;
+                }
+                if (myArr.results[i].provinceEnglishName == "Germany") {
+                    document.getElementById("germany").innerHTML = myArr.results[i].confirmedCount;
+                    document.getElementById("germanyDead").innerHTML = myArr.results[i].deadCount;
+                }
+                if (myArr.results[i].provinceEnglishName == "Iran") {
+                    document.getElementById("iran").innerHTML = myArr.results[i].confirmedCount;
+                    document.getElementById("iranDead").innerHTML = myArr.results[i].deadCount;
+                }
+                if (myArr.results[i].provinceEnglishName == "China") {
+                    document.getElementById("china").innerHTML = myArr.results[i].confirmedCount;
+                    document.getElementById("chinaDead").innerHTML = myArr.results[i].deadCount;
+                }
+
+
+            }
+
+            var ctx = document.getElementById("trOran");
+            if (ctx) {
+                ctx.height = 280;
+                var myChart = new Chart(ctx, {
+                    type: 'doughnut',
+                    data: {
+                        datasets: [
+                            {
+                                label: "My First dataset",
+                                data: [myArr.results[b].confirmedCount, myArr.results[b].deadCount],
+                                backgroundColor: [
+                                    '#00b5e9',
+                                    '#fa4251'
+                                ],
+                                hoverBackgroundColor: [
+                                    '#00b5e9',
+                                    '#fa4251'
+                                ],
+                                borderWidth: [
+                                    0, 0
+                                ],
+                                hoverBorderColor: [
+                                    'transparent',
+                                    'transparent'
+                                ]
+                            }
+                        ],
+                        labels: [
+                            'Hasta Sayısı',
+                            'Hayatını Kaybeden'
+                        ]
+                    },
+                    options: {
+                        maintainAspectRatio: false,
+                        responsive: true,
+                        cutoutPercentage: 55,
+                        animation: {
+                            animateScale: true,
+                            animateRotate: true
+                        },
+                        legend: {
+                            display: false
+                        },
+                        tooltips: {
+                            titleFontFamily: "Poppins",
+                            xPadding: 15,
+                            yPadding: 10,
+                            caretPadding: 0,
+                            bodyFontSize: 16
+                        }
+                    }
+                });
+
+            }
+
+
+        }
+    };
+    xmlhttp.open("GET", "https://raw.githubusercontent.com/BlankerL/DXY-COVID-19-Data/master/json/DXYArea.json", true);
+    xmlhttp.send();
+
+    // Percent Chart
+
+
+</script>
+<div class="page-wrapper2">
+
+    <!-- PAGE CONTAINER-->
+    <div class="page-containe2r">
+        <div style="background-color:#dc3545; height: 40px">
+            <marquee scrollamount="8"> <button  class="btn btn-danger episodes">
+
+            </button>        </marquee>
+
+        </div>
+        <!-- MAIN CONTENT-->
+        <div class="main-content2">
+            <div class="section__content section__content--p30">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="overview-wrap">
+                                <h2 class="title-1">Türkiye Koronovirüs Bilgi</h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row m-t-25">
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="overview-item overview-item--c1">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="zmdi zmdi-account-o"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2 id="enfekteOlan"></h2>
+                                            <span>hasta sayısı</span>
+                                        </div>
+                                    </div>
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="overview-item overview-item--c4">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="zmdi zmdi-accounts-alt"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2 id="iyilesen"></h2>
+                                            <span>iyileşen</span>
+                                        </div>
+                                    </div>
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6 col-lg-4">
+                            <div class="overview-item overview-item--c3">
+                                <div class="overview__inner">
+                                    <div class="overview-box clearfix">
+                                        <div class="icon">
+                                            <i class="zmdi zmdi-accounts-list-alt"></i>
+                                        </div>
+                                        <div class="text">
+                                            <h2 id="hayatiniKaybeden"></h2>
+                                            <span>hayatını kaybeden</span>
+                                        </div>
+                                    </div>
+                                    &nbsp;
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-4">
+                            <div class="au-card recent-report">
+                                <div class="au-card-inner">
+                                    <h3 class="title-2">Sağlık Bakanı Duyuruları</h3>
+                                    <a class="twitter-timeline" href="https://twitter.com/drfahrettinkoca"
+                                       data-tweet-limit="1" data-width="500"></a>
+                                    <script async src="http://platform.twitter.com/widgets.js" charset="utf-8"></script>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4">
+                            <div class="au-card chart-percent-card">
+                                <div class="au-card-inner">
+                                    <h3 class="title-2 tm-b-5">Türkiye Oran %</h3>
+                                    <div class="row no-gutters">
+                                        <div class="col-xl-12">
+                                            <div class="chart-note-wrap">
+                                                <div class="chart-note mr-0 d-block">
+                                                    <center>
+                                                        <span class="dot dot--blue"></span>
+                                                        <span>hasta sayısı</span>
+                                                    </center>
+                                                </div>
+                                                <div class="chart-note mr-0 d-block">
+                                                    <center>
+                                                        <span class="dot dot--red"></span>
+                                                        <span>hayatını kaybeden</span>
+                                                    </center>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div>
+                                            <center>
+                                                <div class="trOran">
+                                                    <center>
+                                                        <canvas id="trOran"
+                                                                style="align-content: center;text-align: center"></canvas>
+                                                    </center>
+                                                </div>
+                                            </center>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <h2 class="title-1 m-b-25">Ülkeler</h2>
+                            <div class="au-card au-card--bg-blue au-card-top-countries m-b-40">
+                                <div class="au-card-inner">
+                                    <div class="table-responsive">
+                                        <table class="table table-top-countries">
+                                            <tbody>
+                                            <tr>
+                                                <td>Adı</td>
+                                                <td>Vaka</td>
+                                                <td>Ölen</td>
+
+                                            </tr>
+                                            <tr>
+                                                <td>Amerika</td>
+                                                <td id="america"></td>
+                                                <td id="americaDead"></td>
+                                            </tr>
+                                            <tr>
+                                                <td>İtalya</td>
+                                                <td id="italy"></td>
+                                                <td id="italyDead">asd</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Çin</td>
+                                                <td id="china"></td>
+                                                <td id="chinaDead">asd</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Almanya</td>
+                                                <td id="germany"></td>
+                                                <td id="germanyDead">asd</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Fransa</td>
+                                                <td id="france"></td>
+                                                <td id="franceDead">asd</td>
+                                            </tr>
+                                            <tr>
+                                                <td>İran</td>
+                                                <td id="iran"></td>
+                                                <td id="iranDead">asd</td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="container">
+                            <marquee scrollamount="10"> <div class="episodes"></div></marquee>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="copyright">
+
+                                <p>Copyright © 2020 Data: COVID-19/2019-nCoV Time Series Infection Data Warehouse <a
+                                        href="https://github.com/BlankerL/DXY-COVID-19-Data">Link</a>.</p>
+                                <p>Copyright © 2020 Developer: Burak KUTBAY <a
+                                        href="https://blog.burakkutbay.com">blog.burakkutbay.com</a>.</p>
+                                <p>Copyright © 2018 Colorlib. All rights reserved. Template by <a
+                                        href="https://colorlib.com">Colorlib</a>.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END MAIN CONTENT-->
+        <!-- END PAGE CONTAINER-->
+    </div>
+
+</div>
+
+<!-- Jquery JS-->
+<script src="vendor/jquery-3.2.1.min.js"></script>
+<!-- Bootstrap JS-->
+<script src="vendor/bootstrap-4.1/popper.min.js"></script>
+<script src="vendor/bootstrap-4.1/bootstrap.min.js"></script>
+<!-- Vendor JS       -->
+<script src="vendor/slick/slick.min.js">
+</script>
+<script src="vendor/wow/wow.min.js"></script>
+<script src="vendor/animsition/animsition.min.js"></script>
+<script src="vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+</script>
+<script src="vendor/counter-up/jquery.waypoints.min.js"></script>
+<script src="vendor/counter-up/jquery.counterup.min.js">
+</script>
+<script src="vendor/circle-progress/circle-progress.min.js"></script>
+<script src="vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+<script src="vendor/chartjs/Chart.bundle.min.js"></script>
+<script src="vendor/select2/select2.min.js">
+</script>
+
+<!-- Main JS-->
+<script src="js/main.js"></script>
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-161536726-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-161536726-1');
+</script>
+
+<script>
+    const URL = 'https://www.hurriyet.com.tr/rss/corona-virusu';
+    const containerEpisodes = document.querySelector('.episodes');
+
+
+    const extractRSSFeed = (text) => {
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(text, 'application/xml');
+
+
+        const items = doc.querySelectorAll('item');
+        const markup = [...items].map((item) => {
+            const {textContent: title} = item.querySelector('title');
+
+
+            return `${title}&nbsp;&nbsp;`;
+        });
+
+        containerEpisodes.innerHTML = markup;
+    };
+
+    fetch(URL)
+        .then(response => response.text())
+        .then(text => extractRSSFeed(text));
+
+</script>
+
+</body>
+
+</html>
