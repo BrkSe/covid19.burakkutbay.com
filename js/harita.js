@@ -313,81 +313,6 @@ am4core.ready(function() {
     title.fill = am4core.color("#ffffff");
     title.y = 20;
 
-    // switch between map and globe
-    var mapGlobeSwitch = mapChart.createChild(am4core.SwitchButton);
-    mapGlobeSwitch.align = "right"
-    mapGlobeSwitch.y = 15;
-    mapGlobeSwitch.leftLabel.text = "Map";
-    mapGlobeSwitch.leftLabel.fill = am4core.color("#ffffff");
-    mapGlobeSwitch.rightLabel.fill = am4core.color("#ffffff");
-    mapGlobeSwitch.rightLabel.text = "Globe";
-    mapGlobeSwitch.verticalCenter = "top";
-
-
-    mapGlobeSwitch.events.on("toggled", function() {
-        if (mapGlobeSwitch.isActive) {
-            mapChart.projection = new am4maps.projections.Orthographic;
-            mapChart.backgroundSeries.show();
-            mapChart.panBehavior = "rotateLongLat";
-            polygonSeries.exclude = [];
-        } else {
-            mapChart.projection = new am4maps.projections.Miller;
-            mapChart.backgroundSeries.hide();
-            mapChart.panBehavior = "move";
-            removeAntarctica(mapData);
-            polygonSeries.data = mapData;
-            polygonSeries.exclude = ["AQ"];
-        }
-    })
-
-
-    // switch between map and globe
-    var absolutePerCapitaSwitch = mapChart.createChild(am4core.SwitchButton);
-    absolutePerCapitaSwitch.align = "center"
-    absolutePerCapitaSwitch.y = 15;
-    absolutePerCapitaSwitch.leftLabel.text = "Absolute";
-    absolutePerCapitaSwitch.leftLabel.fill = am4core.color("#ffffff");
-    absolutePerCapitaSwitch.rightLabel.fill = am4core.color("#ffffff");
-    absolutePerCapitaSwitch.rightLabel.text = "Per Capita";
-    absolutePerCapitaSwitch.rightLabel.interactionsEnabled = true;
-    absolutePerCapitaSwitch.rightLabel.tooltipText = "When calculating max value, countries with population less than 100.000 are not included."
-    absolutePerCapitaSwitch.verticalCenter = "top";
-
-
-    absolutePerCapitaSwitch.events.on("toggled", function() {
-        if (absolutePerCapitaSwitch.isActive) {
-            bubbleSeries.hide(0);
-            perCapita = true;
-            bubbleSeries.interpolationDuration = 0;
-            polygonSeries.heatRules.getIndex(0).max = colors[currentType];
-            polygonSeries.heatRules.getIndex(0).maxValue = maxPC[currentType];
-            polygonSeries.mapPolygons.template.applyOnClones = true;
-
-            sizeSlider.hide()
-            filterSlider.hide();
-            sizeLabel.hide();
-            filterLabel.hide();
-
-            updateCountryTooltip();
-
-        } else {
-            perCapita = false;
-            polygonSeries.interpolationDuration = 0;
-            bubbleSeries.interpolationDuration = 1000;
-            bubbleSeries.show();
-            polygonSeries.heatRules.getIndex(0).max = countryColor;
-            polygonSeries.mapPolygons.template.tooltipText = undefined;
-            sizeSlider.show()
-            filterSlider.show();
-            sizeLabel.show();
-            filterLabel.show();
-        }
-        polygonSeries.mapPolygons.each(function(mapPolygon) {
-            mapPolygon.fill = mapPolygon.fill;
-            mapPolygon.defaultState.properties.fill = undefined;
-        })
-    })
-
 
     // buttons & chart container
     var buttonsAndChartContainer = container.createChild(am4core.Container);
@@ -710,9 +635,9 @@ am4core.ready(function() {
     activeSeries.hidden = false;
     activeSeries.showOnInit = false;
 
-    var confirmedSeries = addSeries("confirmed", confirmedColor);
-    var recoveredSeries = addSeries("recovered", recoveredColor);
-    var deathsSeries = addSeries("deaths", deathsColor);
+    var confirmedSeries = addSeries("Toplam", confirmedColor);
+    var recoveredSeries = addSeries("İyileşen", recoveredColor);
+    var deathsSeries = addSeries("Ölüm", deathsColor);
 
     var series = { active: activeSeries, confirmed: confirmedSeries, recovered: recoveredSeries, deaths: deathsSeries };
     // add series
@@ -775,10 +700,10 @@ am4core.ready(function() {
 
     // BUTTONS
     // create buttons
-    var activeButton = addButton("active", activeColor);
-    var confirmedButton = addButton("confirmed", confirmedColor);
-    var recoveredButton = addButton("recovered", recoveredColor);
-    var deathsButton = addButton("deaths", deathsColor);
+    var activeButton = addButton("Hasta", activeColor);
+    var confirmedButton = addButton("Toplam", confirmedColor);
+    var recoveredButton = addButton("İyileşen", recoveredColor);
+    var deathsButton = addButton("Ölüm", deathsColor);
 
     var buttons = { active: activeButton, confirmed: confirmedButton, recovered: recoveredButton, deaths: deathsButton };
 
@@ -1019,17 +944,11 @@ am4core.ready(function() {
         })
     }
 
-    // calculate zoom level (default is too close)
-    function getZoomLevel(mapPolygon) {
-        var w = mapPolygon.polygon.bbox.width;
-        var h = mapPolygon.polygon.bbox.width;
-        // change 2 to smaller walue for a more close zoom
-        return Math.min(mapChart.seriesWidth / (w * 2), mapChart.seriesHeight / (h * 2))
-    }
+
 
     // show world data
     function showWorld() {
-        currentCountry = "World";
+        currentCountry = "Dünya";
         currentPolygon = undefined;
         resetHover();
 
@@ -1208,38 +1127,7 @@ am4core.ready(function() {
         populateCountries(slideData.list);
     });
 
-    /**
-     * Country/state list on the right
-     */
-    function populateCountries(list) {
-        var table = $("#areas tbody");
-        table.find(".area").remove();
-        for (var i = 0; i < list.length; i++) {
-            var area = list[i];
-            var polygon = polygonSeries.getPolygonById(area.id);
-            if (polygon) {
-                var name = polygon.dataItem.dataContext.name;
-                if (name) {
-                    var tr = $("<tr>").addClass("area").data("areaid", area.id).appendTo(table).on("click", function() {
-                        selectCountry(polygonSeries.getPolygonById($(this).data("areaid")));
-                    }).hover(function() {
-                        rollOverCountry(polygonSeries.getPolygonById($(this).data("areaid")));
-                    });
-                    $("<td>").appendTo(tr).data("areaid", area.id).html(name);
-                    $("<td>").addClass("value").appendTo(tr).html(area.confirmed);
-                    $("<td>").addClass("value").appendTo(tr).html(area.deaths);
-                    $("<td>").addClass("value").appendTo(tr).html(area.recovered);
-                }
-            }
 
-        }
-        $("#areas").DataTable({
-            "paging": false,
-            "select": true
-        }).column("1")
-            .order("desc")
-            .draw();;
-    }
 
 
     function removeAntarctica(mapData){
