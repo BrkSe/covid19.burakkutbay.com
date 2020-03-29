@@ -29,10 +29,24 @@
 
     <!-- Main CSS-->
     <link href="css/theme.css" rel="stylesheet" media="all">
-
+    <style>
+        #chartdiv {
+            max-width: 100%;
+            height: 800px;
+            background-color:#212327;
+        }
+    </style>
 </head>
 
 <body class="animsition">
+<script src="https://www.amcharts.com/lib/4/core.js"></script>
+<script src="https://www.amcharts.com/lib/4/charts.js"></script>
+<script src="https://www.amcharts.com/lib/4/maps.js"></script>
+<script src="https://www.amcharts.com/lib/4/geodata/worldLow.js"></script>
+<script src="https://covid.amCharts.com/data/js/world_timeline.js"></script>
+<script src="https://covid.amCharts.com/data/js/total_timeline.js"></script>
+<script src="https://www.amcharts.com/lib/4/themes/animated.js"></script>
+<script src="js/harita.js"></script>
 
 <script>
     var xmlhttp = new XMLHttpRequest();
@@ -141,6 +155,7 @@
 
 
 </script>
+
 <div class="page-wrapper2">
 
     <!-- PAGE CONTAINER-->
@@ -339,6 +354,7 @@
                             </div>
                         </div>
                     </div>
+                    <div id="chartdiv"></div>
                     <div class="row">
                         <div class="container">
                             <marquee scrollamount="10">
